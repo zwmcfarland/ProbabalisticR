@@ -1,5 +1,6 @@
 package com.zwmcfarland.java.probabalisticR.dto;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,5 +54,9 @@ public class TextDataLine {
 
 	public boolean containsWord(String word) {
 		return this.wordCountAgrigater.containsKey(word);
+	}
+
+	public boolean containsAnyWord(List<String> query) {
+		return query.stream().anyMatch(term -> this.containsWord(term));
 	}
 }

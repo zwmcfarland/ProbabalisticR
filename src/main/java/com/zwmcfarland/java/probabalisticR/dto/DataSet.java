@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by Zac on 9/10/2016.
@@ -18,6 +19,16 @@ public class DataSet {
 
 	public Set<String> getNewsGroups() {
 		return this.newsGroups.keySet();
+	}
+	
+	public List<TextDataLine> getAllTextLines() {
+		List<TextDataLine> lines = new ArrayList<TextDataLine>();
+		for(String key : this.newsGroups.keySet()) {
+			for(TextDataLine line : this.newsGroups.get(key)) {
+				lines.add(line);
+			}
+		}
+		return lines;
 	}
 
 	public List<TextDataLine> getLinesInNewsGroup(String newsGroup) {

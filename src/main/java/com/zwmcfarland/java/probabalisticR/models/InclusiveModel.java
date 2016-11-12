@@ -3,18 +3,19 @@ package com.zwmcfarland.java.probabalisticR.models;
 import java.util.List;
 
 import com.zwmcfarland.java.probabalisticR.dto.DataSet;
+import com.zwmcfarland.java.probabalisticR.dto.TextDataLine;
 
-public class InclusiveModel implements IRModel {
+// This model is pretty simple, it simply uses the entire document for R.
+public class InclusiveModel extends ProbabalisticIRModel {
+	private List<TextDataLine> documents;
 
 	@Override
-	public void initializeDataStructures(DataSet s) {
-		// TODO Auto-generated method stub
-		
+	public void initializeDataStructures(DataSet dataSet) {
+		this.documents = dataSet.getAllTextLines();
 	}
 
 	@Override
 	public double runQuery(List<String> query) {
-		// TODO Auto-generated method stub
-		return 0;
+		return super.runProbablisticR(this.documents);
 	}
 }
