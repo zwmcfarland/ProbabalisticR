@@ -11,8 +11,11 @@ import com.zwmcfarland.java.probabalisticR.models.BooleanModel;
 import com.zwmcfarland.java.probabalisticR.models.ProbabalisticIRModel;
 import com.zwmcfarland.java.probabalisticR.models.InclusiveModel;
 import com.zwmcfarland.java.probabalisticR.models.VectorModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class TheComparinator {
+	private static final Logger LOG = LogManager.getLogger(TheComparinator.class.getName());
 	Map<String, ProbabalisticIRModel> models;
 	Map<String, List<String>> queries;
 	
@@ -29,10 +32,15 @@ public class TheComparinator {
 	}
 
 	public void setData(DataSet dataset) {
-		this.models.entrySet().stream().forEach(a -> a.getValue().initializeDataStructures(dataset));
+		LOG.trace("Comparinator is building indexes");
+		this.models.entrySet().stream().forEach(a -> {
+			LOG.debug("Building index for " + a.getKey());
+			a.getValue().initializeDataStructures(dataset);
+		});
 	}
 
 	public Map<String, Map<String, Double>> comparinate() {
+		LOG.info("Begining Comparinating");
 		Map<String, Map<String, Double>> results = new HashMap<String, Map<String, Double>>();
 		this.models.entrySet().stream().forEach(model -> {
 			Map<String, Double> result = new HashMap<String, Double>();
