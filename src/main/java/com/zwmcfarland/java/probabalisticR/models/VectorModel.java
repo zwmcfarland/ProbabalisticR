@@ -15,6 +15,7 @@ public class VectorModel extends ProbabalisticIRModel {
 	List<TextDataLine> documents;
 	List<Map<String, Double>> documentVectors;
 	List<String> allKeywords;
+	Map<String, Double> idfMap;
 
 	@Override
 	public void initializeDataStructures(DataSet dataSet) {
@@ -22,11 +23,19 @@ public class VectorModel extends ProbabalisticIRModel {
 		this.documents = dataSet.getAllTextLines();
 		this.allKeywords = new ArrayList<String>();
 		this.documentVectors = new ArrayList<Map<String, Double>>();
+		this.idfMap = new HashMap<String, Double>();
+
 		for(TextDataLine line : this.documents) {
 			for(String keyword : line.getWordList()) {
 				this.allKeywords.add(keyword);
 			}
 		}
+
+		LOG.trace("Building IDF map");
+		allKeywords.stream().forEach(term -> {
+			this.idfMap.put(term, this.idf(this.documents, term));
+		});
+
 		LOG.trace("Building document vector index on " + this.allKeywords.size() + " keywords");
 		int documentCount = this.documents.size();
 		for(int i = 0; i < this.documents.size(); i ++) {
@@ -79,10 +88,9 @@ public class VectorModel extends ProbabalisticIRModel {
 
 
 		Map<String, Double> tfidfvector = new HashMap<String, Double>();
-		allTerms.parallelStream().forEach(term -> {
+		allTerms.stream().forEach(term -> {
 			double tf = this.tf(document, term);
-			double idf = this.idf(this.documents, term);
-			double tfidf = tf * idf;
+			double tfidf = tf * this.idfMap.get(term);
 			tfidfvector.put(term, tfidf);
 		});
 		return tfidfvector;
@@ -91,12 +99,7 @@ public class VectorModel extends ProbabalisticIRModel {
 	public double idf(List<TextDataLine> docs, String term) {
 		double n = 0;
 		for (TextDataLine doc : docs) {
-			for (String word : doc.getWordList()) {
-				if (term.equalsIgnoreCase(word)) {
-					n++;
-					break;
-				}
-			}
+			n += doc.getWordCount(term);
 		}
 		return Math.log(docs.size() / n);
 	}
