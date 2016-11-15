@@ -29,6 +29,7 @@ public class VectorModel extends ProbabalisticIRModel {
 			for(String keyword : line.getWordList()) {
 				this.allKeywords.add(keyword);
 			}
+			line.destroyKeywordList();
 		}
 
 		LOG.trace("Building IDF map");
@@ -40,7 +41,7 @@ public class VectorModel extends ProbabalisticIRModel {
 		int documentCount = this.documents.size();
 		for(int i = 0; i < this.documents.size(); i ++) {
 			LOG.trace("Calculating vector index for document " + (i + 1) + " of " + documentCount);
-			this.documentVectors.add(this.tfIdfCalculator(this.documents.get(i), this.allKeywords));
+			this.documentVectors.add(this.tfIdfCalculator(this.documents.get(i)));
 		}
 	}
 
@@ -52,7 +53,7 @@ public class VectorModel extends ProbabalisticIRModel {
 			queryLine.addWord(queryTerm);
 		}
 
-		Map<String, Double> queryVector = this.tfIdfCalculator(queryLine, this.allKeywords);
+		Map<String, Double> queryVector = this.tfIdfCalculator(queryLine);
 		List<Integer> documents = new ArrayList<Integer>();
 		List<TextDataLine> R = new ArrayList<TextDataLine>();
 
@@ -77,18 +78,16 @@ public class VectorModel extends ProbabalisticIRModel {
 	}
 
 	public double tf(TextDataLine doc, String term) {
-		return doc.getWordCount(term) / doc.getWordList().size();
+		return doc.getWordCount(term) / doc.getTotalWords();
 	}
 
 	/**
 	 * Method to create termVector according to its tfidf score.
 	 */
-	public Map<String, Double> tfIdfCalculator(TextDataLine document, List<String> allTerms) {
-		LOG.debug("Calculating document vector");
-
+	public Map<String, Double> tfIdfCalculator(TextDataLine document) {
 
 		Map<String, Double> tfidfvector = new HashMap<String, Double>();
-		allTerms.stream().forEach(term -> {
+		this.allKeywords.stream().forEach(term -> {
 			double tf = this.tf(document, term);
 			double tfidf = tf * this.idfMap.get(term);
 			tfidfvector.put(term, tfidf);

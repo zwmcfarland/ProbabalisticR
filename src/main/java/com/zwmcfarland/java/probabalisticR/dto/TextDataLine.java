@@ -77,4 +77,8 @@ public class TextDataLine {
 	public boolean containsAnyWord(List<String> query) {
 		return query.stream().anyMatch(term -> this.containsWord(term));
 	}
+
+	public void destroyKeywordList() {
+		this.wordList = null; // We can use this to free up memory
+	}
 }
