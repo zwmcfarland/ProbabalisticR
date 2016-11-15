@@ -18,4 +18,8 @@ public class InclusiveModel extends ProbabalisticIRModel {
 	public double runQuery(List<String> query) {
 		return super.runProbablisticR(this.documents);
 	}
+
+	public void clearData() {
+		this.documents = null;
+	}
 }

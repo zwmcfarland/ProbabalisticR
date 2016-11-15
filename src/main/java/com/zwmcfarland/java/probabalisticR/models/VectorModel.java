@@ -60,7 +60,7 @@ public class VectorModel extends ProbabalisticIRModel {
 		for(int i = 0; i < this.documents.size(); i++) {
 			double distance = this.cosine_similarity(queryVector, this.documentVectors.get(i));
 			System.out.println("Distance Found " + distance);
-			if(distance >= 0.5d) {
+			if(distance >= 0.0d) {
 				R.add(this.documents.get(i));
 			}
 		}
@@ -70,7 +70,7 @@ public class VectorModel extends ProbabalisticIRModel {
 	public double cosine_similarity(Map<String, Double> v1, Map<String, Double> v2) {
 		Set<String> both = new HashSet<String>(v1.keySet());
 		both.retainAll(v2.keySet());
-		double sclar = 0, norm1 = 0, norm2 = 0;
+		double sclar = 0d, norm1 = 0d, norm2 = 0d;
 		for (String k : both) sclar += v1.get(k) * v2.get(k);
 		for (String k : v1.keySet()) norm1 += v1.get(k) * v1.get(k);
 		for (String k : v2.keySet()) norm2 += v2.get(k) * v2.get(k);
@@ -105,5 +105,12 @@ public class VectorModel extends ProbabalisticIRModel {
 
 	public double tfIdf(TextDataLine doc, List<TextDataLine> docs, String term) {
 		return tf(doc, term) * idf(docs, term);
+	}
+
+	public void clearData() {
+		this.allKeywords = null;
+		this.documents = null;
+		this.documentVectors = null;
+		this.idfMap = null;
 	}
 }

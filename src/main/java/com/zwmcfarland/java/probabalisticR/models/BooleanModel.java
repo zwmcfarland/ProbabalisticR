@@ -19,4 +19,8 @@ public class BooleanModel extends ProbabalisticIRModel {
 		List<TextDataLine> R = this.documents.stream().filter(document -> document.containsAnyWord(query)).collect(Collectors.toList());
 		return super.runProbablisticR(R);
 	}
+
+	public void clearData() {
+		this.documents = null;
+	}
 }

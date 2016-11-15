@@ -27,10 +27,8 @@ public class Application {
         dataFile = getValidFile(args[0]);
         DataSet dataSet = getDataSet(dataFile);
         TheComparinator comparinator = new TheComparinator();
-        LOG.trace("Sending data to the comparinator");
-        comparinator.setData(dataSet);
 		LOG.trace("Time for comparinating!");
-        Map<String, Map<String, Double>> results = comparinator.comparinate();
+        Map<String, Map<String, Double>> results = comparinator.comparinate(dataSet);
 		LOG.trace("Sending comparination results to the printinator");
         Printinator.printinate(results);
     }

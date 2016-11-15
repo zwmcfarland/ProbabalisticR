@@ -32,16 +32,16 @@ public class TextDataLine {
 		}
 	}
 
-	public Integer getWordCount(String term) {
+	public Double getWordCount(String term) {
 		Integer count = this.wordCountAgrigater.get(term);
 		if(count != null) {
 
 		}
-		return count != null ? count : 0;
+		return count != null ? count : 0d;
 	}
 
-	public int getTotalWords() {
-		int total = 0;
+	public double getTotalWords() {
+		double total = 0d;
 		for(String word: this.wordCountAgrigater.keySet()) {
 			total += this.wordCountAgrigater.get(word).intValue();
 		}

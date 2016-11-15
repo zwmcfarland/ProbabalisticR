@@ -11,7 +11,9 @@ public abstract class ProbabalisticIRModel {
 
 	// Takes the list of query terms, and retuns the score for this query
 	public abstract double runQuery(List<String> query);
-	
+
+	public abstract void clearData();
+
 	//Implementing classes will simply provide R for this method.
 	protected double runProbablisticR(List<TextDataLine> R) {
 		return 0d;
