@@ -59,11 +59,11 @@ public class VectorModel extends ProbabalisticIRModel {
 
 		for(int i = 0; i < this.documents.size(); i++) {
 			double distance = this.cosine_similarity(queryVector, this.documentVectors.get(i));
-			System.out.println("Distance Found " + distance);
-			if(distance >= 0.0d) {
+			if(distance > 0.0d) {
 				R.add(this.documents.get(i));
 			}
 		}
+		LOG.debug("Vector space identified " + R.size() + " relevant documents");
 		return super.runProbablisticR(R);
 	}
 
@@ -88,9 +88,11 @@ public class VectorModel extends ProbabalisticIRModel {
 
 		Map<String, Double> tfidfvector = new HashMap<String, Double>();
 		this.allKeywords.stream().forEach(term -> {
-			double tf = this.tf(document, term);
-			double tfidf = tf * this.idfMap.get(term);
-			tfidfvector.put(term, tfidf);
+			if(document.containsWord(term)) {
+				double tf = this.tf(document, term);
+				double tfidf = tf * this.idfMap.get(term);
+				tfidfvector.put(term, tfidf);
+			}
 		});
 		return tfidfvector;
 	}
