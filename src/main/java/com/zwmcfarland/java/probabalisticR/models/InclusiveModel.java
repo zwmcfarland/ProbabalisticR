@@ -21,7 +21,7 @@ public class InclusiveModel extends ProbabalisticIRModel {
 	@Override
 	public void runQuery(List<String> query) {
 		LOG.debug("Starting inclusive model");
-		super.runProbablisticR(this.documents, query);
+		super.runProbablisticR(this.documents, this.documents, query);
 	}
 
 	public void clearData() {

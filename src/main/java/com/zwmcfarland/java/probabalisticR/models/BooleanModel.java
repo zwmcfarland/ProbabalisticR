@@ -22,7 +22,7 @@ public class BooleanModel extends ProbabalisticIRModel {
 	public void runQuery(List<String> query) {
 		LOG.debug("Starting boolean model");
 		List<TextDataLine> R = this.documents.stream().filter(document -> document.containsAnyWord(query)).collect(Collectors.toList());
-		super.runProbablisticR(R, query);
+		super.runProbablisticR(this.documents, R, query);
 	}
 
 	public void clearData() {

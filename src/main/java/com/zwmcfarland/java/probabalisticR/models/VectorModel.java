@@ -63,7 +63,7 @@ public class VectorModel extends ProbabalisticIRModel {
 			}
 		}
 		LOG.debug("Vector space identified " + R.size() + " relevant documents");
-		super.runProbablisticR(R, query);
+		super.runProbablisticR(this.documents, R, query);
 	}
 
 	public double cosine_similarity(Map<String, Double> v1, Map<String, Double> v2) {

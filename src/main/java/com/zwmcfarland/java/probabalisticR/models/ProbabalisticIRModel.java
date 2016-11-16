@@ -24,10 +24,10 @@ public abstract class ProbabalisticIRModel {
 	public abstract void clearData();
 
 	//Implementing classes will simply provide R for this method.
-	protected void runProbablisticR(List<TextDataLine> R, List<String> query) {
+	protected void runProbablisticR(List<TextDataLine> allDocuments, List<TextDataLine> R, List<String> query) {
 		LOG.debug("Starting the probabalistic model with " + R.size() + " Documents");
 		Map<TextDataLine, Double> documentScore = new HashMap<TextDataLine, Double>();
-		formatData(R);
+		formatData(allDocuments);
 		for(TextDataLine document: R) {
 			for(String queryTerm: query) {
 				if(document.containsWord(queryTerm)) {
