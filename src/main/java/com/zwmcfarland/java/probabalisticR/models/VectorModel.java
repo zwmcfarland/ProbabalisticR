@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 import javax.xml.soap.Text;
 
 public class VectorModel extends ProbabalisticIRModel {
-	private static final Logger LOG = LogManager.getLogger(ProbabalisticIRModel.class.getName());
+	private static final Logger LOG = LogManager.getLogger(VectorModel.class.getName());
 	List<TextDataLine> documents;
 	List<Map<String, Double>> documentVectors;
 	List<String> allKeywords;
@@ -29,7 +29,6 @@ public class VectorModel extends ProbabalisticIRModel {
 			for(String keyword : line.getWordList()) {
 				this.allKeywords.add(keyword);
 			}
-			line.destroyKeywordList();
 		}
 
 		LOG.trace("Building IDF map");
@@ -46,7 +45,7 @@ public class VectorModel extends ProbabalisticIRModel {
 	}
 
 	@Override
-	public double runQuery(List<String> query) {
+	public void runQuery(List<String> query) {
 		LOG.info("Running vector model query");
 		TextDataLine queryLine = new TextDataLine();
 		for(String queryTerm: query) {
@@ -64,7 +63,7 @@ public class VectorModel extends ProbabalisticIRModel {
 			}
 		}
 		LOG.debug("Vector space identified " + R.size() + " relevant documents");
-		return super.runProbablisticR(R);
+		super.runProbablisticR(R, query);
 	}
 
 	public double cosine_similarity(Map<String, Double> v1, Map<String, Double> v2) {

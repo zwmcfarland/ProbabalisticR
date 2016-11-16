@@ -28,21 +28,19 @@ public class TheComparinator {
 		List<String> query1 = Arrays.asList("religion", "god", "false", "prophet");
 		List<String> query2 = Arrays.asList("mpeg", "player", "decod");
 		this.queries.put("Query1", query1);
-		this.queries.put("Query1", query2);
+		this.queries.put("Query2", query2);
 	}
 
-	public Map<String, Map<String, Double>> comparinate(DataSet dataset) {
+	public void comparinate(DataSet dataset) {
 		LOG.info("Begining Comparinating");
-		Map<String, Map<String, Double>> results = new HashMap<String, Map<String, Double>>();
 		this.models.entrySet().stream().forEach(model -> {
 			Map<String, Double> result = new HashMap<String, Double>();
 			model.getValue().initializeDataStructures(dataset);
 			this.queries.entrySet().stream().forEach(query -> {
-				result.put(query.getKey(), model.getValue().runQuery(query.getValue()));
+				LOG.debug("Running Query " + query.getKey());
+				model.getValue().runQuery(query.getValue());
 			});
 			model.getValue().clearData();
-			results.put(model.getKey(), result);
 		});
-		return results;
 	}
 }

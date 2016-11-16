@@ -28,9 +28,7 @@ public class Application {
         DataSet dataSet = getDataSet(dataFile);
         TheComparinator comparinator = new TheComparinator();
 		LOG.trace("Time for comparinating!");
-        Map<String, Map<String, Double>> results = comparinator.comparinate(dataSet);
-		LOG.trace("Sending comparination results to the printinator");
-        Printinator.printinate(results);
+        comparinator.comparinate(dataSet);
     }
 
     private static DataSet getDataSet(File dataFile) {
